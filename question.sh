@@ -40,4 +40,26 @@
 #  2014-09-01,A,3,100.4
 #
 #  >>> Escriba su codigo a partir de este punto <<<
-#
+
+# Agregamos cero a los dias con un solo digito
+sed 's/^\([0-9]\)\//0\1\//g' $1 > data_mod1.csv
+# Agregamos 20 a los años que solo tienen dos digitos
+sed 's/\/\([0-9][0-9]\)\;/\/20\1\;/g' data_mod1.csv > data_mod2.csv
+# Agregamos cero a los meses con un solo digito
+sed 's/\/\([0-9]\)\//\/0\1\//g' data_mod2.csv > data_mod3.csv
+# Cambiamos el orden de DD/MM/YY a YYYY/MM/DD
+sed 's/\([0-9][0-9]\)\/\([0-9][0-9]\)\/\([0-9]*\)/\3-\2-\1/g' data_mod3.csv > data_mod4.csv
+# Cambiar minusculas por mayusculas
+tr '[:lower:]' '[:upper:]' < data_mod4.csv > data_mod5.csv 
+# Llenar espacios vacios part 1
+sed 's/;;/;\\N;/g' data_mod5.csv > data_mod6.csv
+# Llenar espacios vacios part 2
+sed 's/;$/;\\N/g' data_mod6.csv > data_mod7.csv
+# Llenar espacios vacios part 3
+sed 's/;N/;\\N/g' data_mod7.csv > data_mod8.csv
+# Reemplazar , y ;
+cat data_mod8.csv | tr ',' '.' | tr ';' ',' > data_mod9.csv
+# Mostrar resultado 
+cat data_mod9.csv
+
+
